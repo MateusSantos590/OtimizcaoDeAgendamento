@@ -5,14 +5,14 @@ Padrões aplicados: Orientação a Objetos (OOP), Logging, Type Hinting, Tratame
 """
 # Vamos falar sobre essas bibliotecas:
 
-import sqlite3 # A biblioteca sqlite3 é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
-import pandas as pd # A biblioteca pandas é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
-from datetime import datetime, timedelta # A biblioteca datetime é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
-import random # A biblioteca random é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
-import matplotlib.pyplot as plt # A biblioteca matplotlib é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
-import os # A biblioteca os é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
-import logging # A biblioteca logging é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
-from typing import List, Dict, Any, Optional # A biblioteca typing é uma biblioteca padrão do Python que fornece uma interface para trabalhar com bancos de dados relacionais, não sendo necessário sua instalação.
+import sqlite3 # Biblioteca padrão do python que permite trabalhar com bancos de dados relacionais.
+import pandas as pd # Biblioteca padrão do python que fornece estruturas de dados e ferramentas de análise.
+from datetime import datetime, timedelta # Biblioteca padrão do python que fornece classes para manipulação de datas e horas.
+import random # Biblioteca padrão do python que fornece funções para geração de números aleatórios.
+import matplotlib.pyplot as plt # Biblioteca padrão do python que fornece funções para geração de gráficos.
+import os # Biblioteca padrão do python que fornece funções para manipulação de arquivos e diretórios.
+import logging # Biblioteca padrão do python que fornece funções para geração de logs.
+from typing import List, Dict, Any, Optional # Biblioteca padrão do python que fornece funções para geração de logs.
 
 # ==============================================================================
 # 1. Configurações Globais do Projeto (Configuration Management)
@@ -110,8 +110,9 @@ class TransformadorDados:
             if qtd_invalidas > 0:
                 logger.warning(f"Descartados {qtd_invalidas} registros com 'data_hora' inválida.")
             
-            # 2. Conversão de Tipos
-            df_limpo['data_hora'] = pd.to_datetime(df_limpo['data_hora'])
+            # 2. Conversão de Tipos e Tratamento de Formatos Inválidos
+            df_limpo['data_hora'] = pd.to_datetime(df_limpo['data_hora'], errors='coerce')
+            df_limpo = df_limpo.dropna(subset=['data_hora'])
             
             # 3. Tratamento de Nulos
             df_limpo['servico'] = df_limpo['servico'].fillna('Serviço Não Informado')
@@ -124,9 +125,9 @@ class TransformadorDados:
             
             df_limpo['id_cliente'] = df_limpo['id_cliente'].astype(int)
             
-            # 4. Deduplicação
+            # 4. Deduplicação (mantendo o registro mais recente no lote)
             qtd_antes_dup = len(df_limpo)
-            df_limpo = df_limpo.drop_duplicates(subset=['id_agendamento'])
+            df_limpo = df_limpo.drop_duplicates(subset=['id_agendamento'], keep='last')
             qtd_dup = qtd_antes_dup - len(df_limpo)
             if qtd_dup > 0:
                 logger.warning(f"Descartados {qtd_dup} registros duplicados baseados no 'id_agendamento'.")
@@ -147,7 +148,7 @@ class CarregadorDados:
         try:
             # Context manager (with) garante que a conexão será fechada corretamente
             with sqlite3.connect(caminho_banco) as conn:
-                df.to_sql('historico_agendamentos', conn, if_exists='replace', index=False)
+                df.to_sql('historico_agendamentos', conn, if_exists='replace', index=False, chunksize=1000)
                 
             logger.info("Carga de dados no SQLite concluída com sucesso.")
             
@@ -181,6 +182,10 @@ class AnalisadorNegocios:
             
             ociosidade_por_hora = df.groupby('hora_agendamento')['foi_perdido'].mean() * 100
             
+            if ociosidade_por_hora.empty:
+                logger.warning("Não há dados de horário válidos para gerar insights de evasão.")
+                return
+                
             hora_critica = int(ociosidade_por_hora.idxmax())
             taxa_critica = float(ociosidade_por_hora.max())
             
@@ -217,6 +222,7 @@ class AnalisadorNegocios:
             
             plt.tight_layout()
             plt.savefig(Config.GRAFICO_PATH)
+            plt.close() # Evita memory leak ao liberar a figura da memória
             logger.info(f"Dashboard gráfico renderizado e salvo em: {Config.GRAFICO_PATH}")
             
         except ImportError:

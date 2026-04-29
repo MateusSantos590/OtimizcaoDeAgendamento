@@ -30,3 +30,19 @@
 2026-04-29 15:15:26,024 | INFO | PipelineETL | Insight de BI gerado. Horário crítico: 14h com 50.64% de perdas.
 2026-04-29 15:15:28,322 | INFO | PipelineETL | Dashboard gráfico renderizado e salvo em: C:\Users\Latitude 5410\OneDrive\Desktop\Programação_Ferramentas\Python_ciencia_de_dados_exercícios\Otimizacao_de_agendamento.py\grafico_ociosidade.png
 2026-04-29 15:15:28,322 | INFO | PipelineETL | Pipeline executado e concluído com SUCESSO.
+2026-04-29 16:08:51,060 | INFO | PipelineETL | ==================================================
+2026-04-29 16:08:51,061 | INFO | PipelineETL | INICIANDO PIPELINE DE DADOS (ENTERPRISE GRADE)
+2026-04-29 16:08:51,061 | INFO | PipelineETL | ==================================================
+2026-04-29 16:08:51,062 | INFO | PipelineETL | Iniciando extração simulada de 1500 registros.
+2026-04-29 16:08:51,098 | INFO | PipelineETL | Extração concluída com sucesso.
+2026-04-29 16:08:51,099 | INFO | PipelineETL | Iniciando processo de Transformação/Higienização.
+2026-04-29 16:08:51,109 | WARNING | PipelineETL | Descartados 11 registros com 'data_hora' inválida.
+2026-04-29 16:08:51,124 | WARNING | PipelineETL | Descartados 66 registros sem 'id_cliente' (clientes órfãos).
+2026-04-29 16:08:51,127 | WARNING | PipelineETL | Descartados 13 registros duplicados baseados no 'id_agendamento'.
+2026-04-29 16:08:51,127 | INFO | PipelineETL | Transformação concluída. Registros válidos finais: 1410
+2026-04-29 16:08:51,127 | INFO | PipelineETL | Iniciando carga (Load) no banco de dados SQLite: agendamentos_barbearia.db
+2026-04-29 16:08:51,193 | INFO | PipelineETL | Carga de dados no SQLite concluída com sucesso.
+2026-04-29 16:08:51,193 | INFO | PipelineETL | Iniciando motor de Análise de Negócios (BI).
+2026-04-29 16:08:51,207 | INFO | PipelineETL | Insight de BI gerado. Horário crítico: 14h com 49.62% de perdas.
+2026-04-29 16:08:51,668 | INFO | PipelineETL | Dashboard gráfico renderizado e salvo em: C:\Users\Latitude 5410\OneDrive\Desktop\Programação_Ferramentas\Python_ciencia_de_dados_exercícios\Otimizacao_de_agendamento.py\grafico_ociosidade.png
+2026-04-29 16:08:51,669 | INFO | PipelineETL | Pipeline executado e concluído com SUCESSO.
