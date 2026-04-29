@@ -46,3 +46,20 @@
 2026-04-29 16:08:51,207 | INFO | PipelineETL | Insight de BI gerado. Horário crítico: 14h com 49.62% de perdas.
 2026-04-29 16:08:51,668 | INFO | PipelineETL | Dashboard gráfico renderizado e salvo em: C:\Users\Latitude 5410\OneDrive\Desktop\Programação_Ferramentas\Python_ciencia_de_dados_exercícios\Otimizacao_de_agendamento.py\grafico_ociosidade.png
 2026-04-29 16:08:51,669 | INFO | PipelineETL | Pipeline executado e concluído com SUCESSO.
+2026-04-29 16:23:50,475 | INFO | PipelineETL | ==================================================
+2026-04-29 16:23:50,475 | INFO | PipelineETL | INICIANDO PIPELINE DE DADOS (ENTERPRISE GRADE)
+2026-04-29 16:23:50,475 | INFO | PipelineETL | ==================================================
+2026-04-29 16:23:50,476 | INFO | PipelineETL | Iniciando extração simulada de 1500 registros.
+2026-04-29 16:23:50,488 | INFO | PipelineETL | Extração concluída com sucesso.
+2026-04-29 16:23:50,489 | INFO | PipelineETL | Iniciando processo de Transformação/Higienização.
+2026-04-29 16:23:50,494 | WARNING | PipelineETL | Descartados 9 registros com 'data_hora' inválida.
+2026-04-29 16:23:50,521 | WARNING | PipelineETL | Descartados 18 registros com datas irreais (no futuro ou > 1 ano).
+2026-04-29 16:23:50,523 | WARNING | PipelineETL | Descartados 63 registros sem 'id_cliente' (clientes órfãos).
+2026-04-29 16:23:50,525 | WARNING | PipelineETL | Descartados 10 registros duplicados baseados no 'id_agendamento'.
+2026-04-29 16:23:50,526 | INFO | PipelineETL | Transformação concluída. Registros válidos finais: 1400
+2026-04-29 16:23:50,526 | INFO | PipelineETL | Iniciando carga (Load) no banco de dados SQLite: agendamentos_barbearia.db
+2026-04-29 16:23:50,542 | INFO | PipelineETL | Carga de dados no SQLite concluída com sucesso.
+2026-04-29 16:23:50,542 | INFO | PipelineETL | Iniciando motor de Análise de Negócios (BI).
+2026-04-29 16:23:50,560 | INFO | PipelineETL | Insight de BI gerado. Horário crítico: 14h com 44.80% de perdas.
+2026-04-29 16:23:51,178 | INFO | PipelineETL | Dashboard gráfico renderizado e salvo em: C:\Users\Latitude 5410\OneDrive\Desktop\Programação_Ferramentas\Python_ciencia_de_dados_exercícios\Otimizacao_de_agendamento.py\grafico_ociosidade.png
+2026-04-29 16:23:51,179 | INFO | PipelineETL | Pipeline executado e concluído com SUCESSO.

@@ -114,6 +114,17 @@ class TransformadorDados:
             df_limpo['data_hora'] = pd.to_datetime(df_limpo['data_hora'], errors='coerce')
             df_limpo = df_limpo.dropna(subset=['data_hora'])
             
+            # Filtro de Negócio: Remover datas no futuro ou muito antigas (ex: > 1 ano)
+            data_atual = datetime.now()
+            limite_antigo = data_atual - timedelta(days=365)
+            
+            mascara_valida = (df_limpo['data_hora'] <= data_atual) & (df_limpo['data_hora'] >= limite_antigo)
+            qtd_antes_filtro = len(df_limpo)
+            df_limpo = df_limpo[mascara_valida]
+            qtd_descartadas = qtd_antes_filtro - len(df_limpo)
+            if qtd_descartadas > 0:
+                logger.warning(f"Descartados {qtd_descartadas} registros com datas irreais (no futuro ou > 1 ano).")
+            
             # 3. Tratamento de Nulos
             df_limpo['servico'] = df_limpo['servico'].fillna('Serviço Não Informado')
             
@@ -148,7 +159,7 @@ class CarregadorDados:
         try:
             # Context manager (with) garante que a conexão será fechada corretamente
             with sqlite3.connect(caminho_banco) as conn:
-                df.to_sql('historico_agendamentos', conn, if_exists='replace', index=False, chunksize=1000)
+                df.to_sql('historico_agendamentos', conn, if_exists='append', index=False, chunksize=1000)
                 
             logger.info("Carga de dados no SQLite concluída com sucesso.")
             
@@ -193,13 +204,13 @@ class AnalisadorNegocios:
             logger.info(f"Insight de BI gerado. Horário crítico: {hora_critica}h com {taxa_critica:.2f}% de perdas.")
             
             print("\n" + "="*60)
-            print(">> INSIGHT ACIONÁVEL DE NEGÓCIOS (BI)")
+            print(">> INSIGHT ACIONAVEL DE NEGOCIOS (BI)")
             print("="*60)
-            print(f"ALERTA: O horário comercial com MAIOR EVASÃO de clientes é às {hora_critica}h.")
-            print(f"Isso significa que {taxa_critica:.2f}% dos agendamentos marcados para esse horário são cancelados ou sofrem no-show.")
-            print("\nSUGESTÃO DO SISTEMA:")
-            print(f"- Configurar automação via webhook para disparo de WhatsApp 2 horas antes (às {hora_critica - 2}h).")
-            print(f"- Liberar promoções de 'Happy Hour' limitados para este período para forçar engajamento.")
+            print(f"ALERTA: O horario comercial com MAIOR EVASAO de clientes e as {hora_critica}h.")
+            print(f"Isso significa que {taxa_critica:.2f}% dos agendamentos marcados para esse horario sao cancelados ou sofrem no-show.")
+            print("\nSUGESTAO DO SISTEMA:")
+            print(f"- Configurar automacao via webhook para disparo de WhatsApp 2 horas antes (as {hora_critica - 2}h).")
+            print(f"- Liberar promocoes de 'Happy Hour' limitados para este periodo para forcar engajamento.")
             print("="*60 + "\n")
             
             self._gerar_grafico(ociosidade_por_hora, hora_critica)
@@ -213,7 +224,11 @@ class AnalisadorNegocios:
             plt.figure(figsize=(10, 5))
             cores = ['#e74c3c' if h == hora_destaque else '#3498db' for h in serie_dados.index]
             
-            serie_dados.plot(kind='bar', color=cores)
+            ax = serie_dados.plot(kind='bar', color=cores)
+            
+            # Adiciona rótulos de dados no topo de cada barra (Visualização Pro)
+            for container in ax.containers:
+                ax.bar_label(container, fmt='%.1f%%', label_type='edge', padding=3, fontsize=10)
             plt.title('Taxa de Evasão (Cancelamentos/Ausências) por Horário (%)', fontsize=14, fontweight='bold')
             plt.xlabel('Horário Agendado (h)', fontsize=12)
             plt.ylabel('Taxa de Perda (%)', fontsize=12)
