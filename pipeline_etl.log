@@ -1,0 +1,32 @@
+2026-04-29 15:14:51,858 | INFO | PipelineETL | ==================================================
+2026-04-29 15:14:51,859 | INFO | PipelineETL | INICIANDO PIPELINE DE DADOS (ENTERPRISE GRADE)
+2026-04-29 15:14:51,859 | INFO | PipelineETL | ==================================================
+2026-04-29 15:14:51,860 | INFO | PipelineETL | Iniciando extração simulada de 1500 registros.
+2026-04-29 15:14:51,889 | INFO | PipelineETL | Extração concluída com sucesso.
+2026-04-29 15:14:51,889 | INFO | PipelineETL | Iniciando processo de Transformação/Higienização.
+2026-04-29 15:14:51,901 | WARNING | PipelineETL | Descartados 16 registros com 'data_hora' inválida.
+2026-04-29 15:14:51,934 | WARNING | PipelineETL | Descartados 62 registros sem 'id_cliente' (clientes órfãos).
+2026-04-29 15:14:51,937 | WARNING | PipelineETL | Descartados 9 registros duplicados baseados no 'id_agendamento'.
+2026-04-29 15:14:51,938 | INFO | PipelineETL | Transformação concluída. Registros válidos finais: 1413
+2026-04-29 15:14:51,938 | INFO | PipelineETL | Iniciando carga (Load) no banco de dados SQLite: agendamentos_barbearia.db
+2026-04-29 15:14:51,998 | INFO | PipelineETL | Carga de dados no SQLite concluída com sucesso.
+2026-04-29 15:14:51,999 | INFO | PipelineETL | Iniciando motor de Análise de Negócios (BI).
+2026-04-29 15:14:52,024 | INFO | PipelineETL | Insight de BI gerado. Horário crítico: 13h com 49.59% de perdas.
+2026-04-29 15:14:52,024 | ERROR | PipelineETL | Erro ao gerar relatórios de BI: 'charmap' codec can't encode character '\U0001f680' in position 0: character maps to <undefined>
+2026-04-29 15:14:52,025 | INFO | PipelineETL | Pipeline executado e concluído com SUCESSO.
+2026-04-29 15:15:25,898 | INFO | PipelineETL | ==================================================
+2026-04-29 15:15:25,899 | INFO | PipelineETL | INICIANDO PIPELINE DE DADOS (ENTERPRISE GRADE)
+2026-04-29 15:15:25,899 | INFO | PipelineETL | ==================================================
+2026-04-29 15:15:25,899 | INFO | PipelineETL | Iniciando extração simulada de 1500 registros.
+2026-04-29 15:15:25,910 | INFO | PipelineETL | Extração concluída com sucesso.
+2026-04-29 15:15:25,910 | INFO | PipelineETL | Iniciando processo de Transformação/Higienização.
+2026-04-29 15:15:25,915 | WARNING | PipelineETL | Descartados 18 registros com 'data_hora' inválida.
+2026-04-29 15:15:25,920 | WARNING | PipelineETL | Descartados 71 registros sem 'id_cliente' (clientes órfãos).
+2026-04-29 15:15:25,921 | WARNING | PipelineETL | Descartados 3 registros duplicados baseados no 'id_agendamento'.
+2026-04-29 15:15:25,921 | INFO | PipelineETL | Transformação concluída. Registros válidos finais: 1408
+2026-04-29 15:15:25,921 | INFO | PipelineETL | Iniciando carga (Load) no banco de dados SQLite: agendamentos_barbearia.db
+2026-04-29 15:15:26,005 | INFO | PipelineETL | Carga de dados no SQLite concluída com sucesso.
+2026-04-29 15:15:26,005 | INFO | PipelineETL | Iniciando motor de Análise de Negócios (BI).
+2026-04-29 15:15:26,024 | INFO | PipelineETL | Insight de BI gerado. Horário crítico: 14h com 50.64% de perdas.
+2026-04-29 15:15:28,322 | INFO | PipelineETL | Dashboard gráfico renderizado e salvo em: C:\Users\Latitude 5410\OneDrive\Desktop\Programação_Ferramentas\Python_ciencia_de_dados_exercícios\Otimizacao_de_agendamento.py\grafico_ociosidade.png
+2026-04-29 15:15:28,322 | INFO | PipelineETL | Pipeline executado e concluído com SUCESSO.
